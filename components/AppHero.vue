@@ -1,0 +1,44 @@
+<template>
+  <section class="masthead" role="img" aria-label="Image Description">
+    <h1>Books</h1>
+    <h1 class="description">Read the books if you dare.</h1>
+  </section>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style lang="scss" scoped>
+.masthead {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  width: 100%;
+  height: 75vh; /* if you don't want it to take up the full screen, reduce this number */
+  background-size: cover !important;
+  background: radial-gradient(
+      ellipse at center,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0) 45%,
+      rgba(0, 0, 0, 0.65) 100%
+    ),
+    url("@/assets/library.jpg") no-repeat center center scroll;
+}
+
+h1 {
+  font-style: normal;
+  font-weight: bold;
+  color: #eee;
+  font-size: 11vmin;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  text-shadow: 1px 2px 4px rgba(0, 0, 0, 0.8);
+  margin-bottom: 12px;
+}
+.description {
+  font-size: 30pt;
+}
+</style>
