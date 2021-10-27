@@ -1,5 +1,5 @@
 <template>
-  <v-footer :absolute="!fixed" app class="footer">
+  <v-footer dark class="footer">
     <p>Copyright 1996 wait this isnt Yu-Gi-Oh</p>
   </v-footer>
 </template>
