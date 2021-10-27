@@ -10,6 +10,7 @@
       <!--  -->
       <v-list nav>
         <v-list-item-group>
+          <AppSearchBar />
           <v-list-item nuxt exact to="/">
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
@@ -35,6 +36,7 @@
         <v-btn nuxt to="/add"> Add Book </v-btn>
       </v-toolbar-items>
       <v-spacer />
+      <AppSearchBar v-if="desktop" />
       <v-app-bar-nav-icon
         class="d-sm-none"
         @click="drawer = !drawer"
@@ -44,13 +46,22 @@
 </template>
 
 <script>
+import AppSearchBar from "@/components/AppSearchBar.vue";
 export default {
+  components: {
+    AppSearchBar,
+  },
   data() {
     return {
       clipped: false,
       drawer: false,
       right: true,
     };
+  },
+  computed: {
+    desktop() {
+      return this.$vuetify.breakpoint.md || this.$vuetify.breakpoint.lg;
+    },
   },
 };
 </script>
