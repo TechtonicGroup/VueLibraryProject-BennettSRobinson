@@ -26,6 +26,7 @@
 import AppHero from "@/components/AppHero.vue";
 
 export default {
+  name: "Home",
   components: {
     AppHero,
   },
