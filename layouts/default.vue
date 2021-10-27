@@ -1,11 +1,13 @@
 <template>
-  <v-app dark>
-    <AppHeader />
-    <v-container>
-      <Nuxt />
-    </v-container>
-    <AppFooter />
-  </v-app>
+  <div>
+    <v-app dark>
+      <AppHeader />
+      <v-container>
+        <Nuxt />
+      </v-container>
+      <AppFooter />
+    </v-app>
+  </div>
 </template>
 
 <script>
