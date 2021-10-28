@@ -5,9 +5,9 @@
         Ph'nglui mglw'nafh Cthulhu R'lyeh wgah'nagl fhtagn</v-card-title
       >
     </v-card>
-    <v-container>
+    <v-container v-if="books.length">
       <v-row gutters>
-        <v-col v-for="book in books" :key="book.id" cols="12" sm="4">
+        <v-col v-for="(book, n) in books" :key="n" cols="12" sm="4">
           <v-card
             class="pa-2"
             outlined
@@ -19,8 +19,8 @@
           >
             <v-img
               :src="book.picture"
-              max-height="250px"
-              max-width="250px"
+              height="250px"
+              width="250px"
               class="ma-auto"
             />
             <br />
@@ -33,11 +33,24 @@
         </v-col>
       </v-row>
     </v-container>
+    <v-container v-else class="d-flex justify-center align-center">
+      <v-card>
+        <v-card-title class="text-h3" justify="center" align="center"
+          >No Books in Library</v-card-title
+        >
+        <br />
+        <v-card-text
+          >Please got add some
+          <nuxt-link to="/add">books</nuxt-link></v-card-text
+        >
+      </v-card>
+    </v-container>
   </v-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
+
 export default {
   name: "Bookshelf",
 
@@ -50,6 +63,11 @@ export default {
   methods: {
     getBooks() {
       this.$store.dispatch("getBooks");
+    },
+  },
+  watch: {
+    books() {
+      this.getBooks();
     },
   },
 };
