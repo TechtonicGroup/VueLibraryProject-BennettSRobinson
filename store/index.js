@@ -48,4 +48,7 @@ export const actions = {
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   },
+  deleteBook(state, id) {
+    axios.delete(libraryUrl + id);
+  },
 };

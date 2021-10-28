@@ -48,6 +48,7 @@
           rounded
           dark
           :block="$vuetify.breakpoint.xsOnly"
+          @click="handleDelete"
           >Delete this Book</v-btn
         >
         <v-btn
@@ -88,6 +89,10 @@ export default {
         " " +
         this.currentBook.author.lastName
       );
+    },
+    handleDelete() {
+      this.$store.dispatch("deleteBook", this.id);
+      this.$router.push({ name: "Bookshelf" });
     },
   },
 };
