@@ -1,10 +1,5 @@
 <template>
-  <v-container class="mt-16" max-height="500px">
-    <v-card>
-      <v-card-title class="d-flex justify-center align-center text-h3" large
-        >Add Book</v-card-title
-      >
-    </v-card>
+  <div>
     <v-card class="d-lg-flex d-sm-block pl-lg-16 justify-space-between">
       <v-form ref="form" v-model="valid" validation>
         <v-container>
@@ -12,7 +7,7 @@
             <v-row cols="12" md="4">
               <v-text-field
                 label="Title"
-                v-model="title"
+                :value="book.title"
                 :rules="titleRules"
                 required
               ></v-text-field>
@@ -22,7 +17,7 @@
             </v-card-title> -->
             <v-row cols="10" md="4">
               <v-text-field
-                v-model="firstName"
+                :value="author.firstName"
                 label="First name"
                 class="mr-10"
                 :rules="authorRules"
@@ -31,7 +26,7 @@
 
               <v-text-field
                 label="Last Name"
-                v-model="lastName"
+                :value="author.lastName"
                 :rules="authorRules"
                 required
               ></v-text-field>
@@ -39,7 +34,7 @@
             <v-row cols="12" md="4">
               <v-textarea
                 label="Summary"
-                v-model="summary"
+                :value="book.summary"
                 class="mr-10"
                 outlined
               ></v-textarea>
@@ -47,26 +42,32 @@
             <v-row cols="12" md="4">
               <v-text-field
                 label="Published"
-                v-model="published"
+                :value="deFormatDate(book.published)"
                 type="date"
               ></v-text-field>
               <v-text-field
                 label="Pages"
                 class="ml-10"
                 type="number"
-                v-model="pages"
+                :value="book.pages"
               ></v-text-field>
             </v-row>
             <v-row cols="12" md="4">
-              <v-rating length="5" size="64" :value="rating" v-model="rating">
-              </v-rating>
+              <v-rating length="5" size="64" :value="book.rating"> </v-rating>
             </v-row>
           </v-col>
         </v-container>
       </v-form>
       <br />
       <v-card class="pl-lg-16 pa-10">
-        <v-img :src="this.image" :row="$vuetify.breakpoint.xsOnly" contain />
+        <v-img
+          :src="book.picture"
+          :row="$vuetify.breakpoint.xsOnly"
+          contain
+          width="400px"
+          height="400px"
+          v-model="image"
+        />
         <br />
         <v-container class="d-flex justify-center align-center">
           <v-btn class="primary" @click="getFile" rounded>Add Image </v-btn>
@@ -80,13 +81,12 @@
         </v-container>
       </v-card>
     </v-card>
-    <v-card>
+    <v-card v-if="form === 'edit'">
       <v-row class="d-flex justify-center align-center">
         <v-btn
           class="primary mr-lg-5"
           :block="$vuetify.breakpoint.xsOnly"
           type="submit"
-          @click="handleSubmit"
           :disabled="!valid"
           rounded
           >Add Book</v-btn
@@ -102,24 +102,17 @@
         </v-btn>
       </v-row>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import Empty from "@/assets/empty.jpeg";
 export default {
-  name: "Add",
+  props: ["form", "book", "author"],
   data() {
     return {
       valid: false,
-      title: "",
-      firstName: "",
-      lastName: "",
-      summary: "",
-      published: "",
-      pages: 0,
-      rating: 0,
       titleRules: [(v) => !!v || "Title is required"],
       authorRules: [(v) => !!v || "Author name is required"],
       image: Empty,
@@ -156,6 +149,11 @@ export default {
       const [YYYY, MM, DD] = date.split("-");
       const newPublished = `${MM}/${DD}/${YYYY}`;
       return newPublished;
+    },
+    deFormatDate(date) {
+      if (!date) return undefined;
+      const [MM, DD, YYYY] = date.split("/");
+      return `${YYYY}-${MM}-${DD}`;
     },
   },
 };

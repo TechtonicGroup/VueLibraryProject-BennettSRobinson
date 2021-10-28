@@ -1,11 +1,10 @@
 import axios from "axios";
 const libraryUrl = "http://localhost:8080/api/books/";
-import Empty from "@/assets/empty.jpeg";
+
 export const state = () => ({
   books: [],
   book: {},
   Author: { firstName: "", lastName: "" },
-  image: Empty,
   file: null,
 });
 
@@ -20,7 +19,6 @@ export const mutations = {
     state.Author = data;
   },
   updateImage: (state, data) => {
-    state.image = URL.createObjectURL(data);
     state.file = data;
   },
 };
