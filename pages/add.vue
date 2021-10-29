@@ -66,7 +66,7 @@
       </v-form>
       <br />
       <v-card class="pl-lg-16 pa-10">
-        <v-img :src="image" :row="$vuetify.breakpoint.xsOnly" contain />
+        <v-img :src="this.image" :row="$vuetify.breakpoint.xsOnly" contain />
         <br />
         <v-container class="d-flex justify-center align-center">
           <v-btn class="primary" @click="getFile" rounded>Add Image </v-btn>
@@ -126,7 +126,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["image", "file"]),
+    ...mapState(["file"]),
   },
   methods: {
     getFile() {
@@ -134,6 +134,7 @@ export default {
     },
     handleImage(e) {
       const newImage = e.target.files[0];
+      this.image = URL.createObjectURL(newImage);
       this.$store.commit("updateImage", newImage);
     },
     handleSubmit() {
@@ -148,7 +149,7 @@ export default {
       formData.append("picture", this.file);
 
       this.$store.dispatch("addBook", formData);
-      this.$router.push({ name: "Bookshelf" });
+      this.$router.push({ path: "/bookshelf" });
     },
     formatDate(date) {
       if (!date) return undefined;

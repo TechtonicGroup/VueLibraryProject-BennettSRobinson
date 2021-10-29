@@ -1,6 +1,12 @@
 <template>
   <div clipped-right app>
-    <v-text-field label="Search" class="mt-4" v-model="search"></v-text-field>
+
+    <v-text-field
+      label="Search"
+      class="mt-4"
+      v-model="search"
+      @keypress.enter="handleSearch"
+    ></v-text-field>
   </div>
 </template>
 
@@ -15,11 +21,13 @@ export default {
     };
   },
   methods: {
-    // handleSearch() {
-    //   const result = this.search;
-    //   this.search = "";
-    //   this.$router.push({ path: "/bookshelf", query: { search: result } });
-    // },
+
+     handleSearch() {
+      const result = this.search;
+      this.search = "";
+      this.$router.push({ path: "/bookshelf", query: { search: result } });
+    },
+
   },
 };
 </script>

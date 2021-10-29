@@ -61,8 +61,10 @@ export default {
     ...mapState(["books"]),
   },
   methods: {
+
     getBooks() {
       this.$store.dispatch("getBooks", this.$route.query.search);
+
     },
   },
   watch: {
