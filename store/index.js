@@ -23,9 +23,10 @@ export const mutations = {
   },
 };
 export const actions = {
-  async getBooks({ state, commit }) {
+  async getBooks({ state, commit }, search) {
     try {
-      const data = await axios.get(libraryUrl);
+      const searchURL = `/search/?query=${search}`;
+      const data = await axios.get(libraryUrl + (search ? searchURL : ""));
       commit("updateBooks", data.data);
     } catch (err) {
       console.error(err);
@@ -48,5 +49,14 @@ export const actions = {
   },
   deleteBook(state, id) {
     axios.delete(libraryUrl + id);
+  },
+
+  updateBook(state, { id, data }) {
+    console.log(id);
+    console.log(data);
+    axios
+      .put(libraryUrl + id, data)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   },
 };

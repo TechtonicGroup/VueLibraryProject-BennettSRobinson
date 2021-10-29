@@ -80,6 +80,8 @@ module.exports = {
   },
   update: async (req, res) => {
     const file = req.file;
+    console.log(req.body);
+    console.log(req.params.id);
     const { summary, published } = req.body;
     if (file !== undefined) {
       uploadParams.Body = file.buffer;
@@ -92,8 +94,8 @@ module.exports = {
         ? file
         : `https://${process.env.BUCKET_NAME}.s3.${process.env.BUCKET_REGION}.amazonaws.com/${uploadParams.Key}`;
 
-    const synopsis = summary === "null" ? undefined : summary;
-    const date = published === "null" ? undefined : published;
+    const synopsis = summary === "undefined" ? undefined : summary;
+    const date = published === "undefined" ? undefined : published;
     try {
       const author = await Author.findOrCreate({
         where: {

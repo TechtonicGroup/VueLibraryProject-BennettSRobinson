@@ -149,7 +149,7 @@ export default {
       formData.append("picture", this.file);
 
       this.$store.dispatch("addBook", formData);
-      this.$router.push({ name: "Bookshelf" });
+      this.$router.push({ path: "/bookshelf" });
     },
     formatDate(date) {
       if (!date) return undefined;

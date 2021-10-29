@@ -61,8 +61,8 @@ export default {
     ...mapState(["books"]),
   },
   methods: {
-    getBooks() {
-      this.$store.dispatch("getBooks");
+    async getBooks() {
+      await this.$store.dispatch("getBooks", this.search);
     },
   },
   watch: {

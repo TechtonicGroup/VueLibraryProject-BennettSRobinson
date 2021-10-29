@@ -7,17 +7,14 @@
             <v-row cols="12" md="4">
               <v-text-field
                 label="Title"
-                :value="book.title"
+                v-model="title"
                 :rules="titleRules"
                 required
               ></v-text-field>
             </v-row>
-            <!-- <v-card-title class="justify-center align-center"
-              >Author:
-            </v-card-title> -->
             <v-row cols="10" md="4">
               <v-text-field
-                :value="author.firstName"
+                v-model="firstName"
                 label="First name"
                 class="mr-10"
                 :rules="authorRules"
@@ -26,7 +23,7 @@
 
               <v-text-field
                 label="Last Name"
-                :value="author.lastName"
+                v-model="lastName"
                 :rules="authorRules"
                 required
               ></v-text-field>
@@ -34,7 +31,7 @@
             <v-row cols="12" md="4">
               <v-textarea
                 label="Summary"
-                :value="book.summary"
+                v-model="summary"
                 class="mr-10"
                 outlined
               ></v-textarea>
@@ -42,18 +39,19 @@
             <v-row cols="12" md="4">
               <v-text-field
                 label="Published"
-                :value="deFormatDate(book.published)"
+                v-model="published"
                 type="date"
               ></v-text-field>
               <v-text-field
                 label="Pages"
                 class="ml-10"
                 type="number"
-                :value="book.pages"
+                v-model="pages"
               ></v-text-field>
             </v-row>
             <v-row cols="12" md="4">
-              <v-rating length="5" size="64" :value="book.rating"> </v-rating>
+              <v-rating length="5" size="64" :value="rating" v-model="rating">
+              </v-rating>
             </v-row>
           </v-col>
         </v-container>
@@ -61,7 +59,7 @@
       <br />
       <v-card class="pl-lg-16 pa-10">
         <v-img
-          :src="book.picture"
+          :src="image"
           :row="$vuetify.breakpoint.xsOnly"
           contain
           width="400px"
@@ -89,7 +87,8 @@
           type="submit"
           :disabled="!valid"
           rounded
-          >Add Book</v-btn
+          @click="handleSubmit"
+          >Submit</v-btn
         >
 
         <v-btn
@@ -109,13 +108,22 @@
 import { mapState } from "vuex";
 import Empty from "@/assets/empty.jpeg";
 export default {
-  props: ["form", "book", "author"],
+  props: ["form", "book", "author", "id"],
   data() {
     return {
       valid: false,
+      title: this.book.title,
+      firstName: this.author.firstName,
+      lastName: this.author.lastName,
+      summary: this.book.summary,
+      published: this.book.published
+        ? this.deFormatDate(this.book.published)
+        : this.book.published,
+      rating: this.book.rating,
+      pages: this.book.pages,
       titleRules: [(v) => !!v || "Title is required"],
       authorRules: [(v) => !!v || "Author name is required"],
-      image: Empty,
+      image: this.book.picture,
     };
   },
   computed: {
@@ -141,7 +149,7 @@ export default {
       formData.append("rating", this.rating);
       formData.append("picture", this.file);
 
-      this.$store.dispatch("addBook", formData);
+      this.$store.dispatch("updateBook", { id: this.id, data: formData });
       this.$router.push({ name: "Bookshelf" });
     },
     formatDate(date) {

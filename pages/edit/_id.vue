@@ -4,14 +4,18 @@
       <v-card-title class="d-flex justify-center align-center text-h3" large
         >Edit Book</v-card-title
       >
-      <AppForm :book="book" :author="Author" form="edit" />
+      <AppForm
+        :book="book"
+        :author="Author"
+        form="edit"
+        :id="this.$route.params.id"
+      />
     </v-card>
   </v-container>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import Empty from "@/assets/empty.jpeg";
 import AppForm from "@/components/AppForm.vue";
 export default {
   components: {
