@@ -62,7 +62,7 @@ export default {
   },
   methods: {
     getBooks() {
-      this.$store.dispatch("getBooks");
+      this.$store.dispatch("getBooks", this.$route.query.search);
     },
   },
   watch: {

@@ -1,10 +1,5 @@
 <template>
-  <v-container class="mt-16" max-height="500px">
-    <v-card>
-      <v-card-title class="d-flex justify-center align-center text-h3" large
-        >Add Book</v-card-title
-      >
-    </v-card>
+  <div>
     <v-card class="d-lg-flex d-sm-block pl-lg-16 justify-space-between">
       <v-form ref="form" v-model="valid" validation>
         <v-container>
@@ -17,9 +12,6 @@
                 required
               ></v-text-field>
             </v-row>
-            <!-- <v-card-title class="justify-center align-center"
-              >Author:
-            </v-card-title> -->
             <v-row cols="10" md="4">
               <v-text-field
                 v-model="firstName"
@@ -66,7 +58,14 @@
       </v-form>
       <br />
       <v-card class="pl-lg-16 pa-10">
-        <v-img :src="image" :row="$vuetify.breakpoint.xsOnly" contain />
+        <v-img
+          :src="image"
+          :row="$vuetify.breakpoint.xsOnly"
+          contain
+          width="400px"
+          height="400px"
+          v-model="image"
+        />
         <br />
         <v-container class="d-flex justify-center align-center">
           <v-btn class="primary" @click="getFile" rounded>Add Image </v-btn>
@@ -80,16 +79,16 @@
         </v-container>
       </v-card>
     </v-card>
-    <v-card>
+    <v-card v-if="form === 'edit'">
       <v-row class="d-flex justify-center align-center">
         <v-btn
           class="primary mr-lg-5"
           :block="$vuetify.breakpoint.xsOnly"
           type="submit"
-          @click="handleSubmit"
           :disabled="!valid"
           rounded
-          >Add Book</v-btn
+          @click="handleSubmit"
+          >Submit</v-btn
         >
 
         <v-btn
@@ -102,31 +101,33 @@
         </v-btn>
       </v-row>
     </v-card>
-  </v-container>
+  </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import Empty from "@/assets/empty.jpeg";
+
 export default {
-  name: "Add",
+  props: ["form", "book", "author", "id"],
   data() {
     return {
       valid: false,
-      title: "",
-      firstName: "",
-      lastName: "",
-      summary: "",
-      published: "",
-      pages: 0,
-      rating: 0,
+      title: this.book.title,
+      firstName: this.author.firstName,
+      lastName: this.author.lastName,
+      summary: this.book.summary,
+      published: this.book.published
+        ? this.deFormatDate(this.book.published)
+        : this.book.published,
+      rating: this.book.rating,
+      pages: this.book.pages,
       titleRules: [(v) => !!v || "Title is required"],
       authorRules: [(v) => !!v || "Author name is required"],
-      image: Empty,
+      image: this.book.picture,
     };
   },
   computed: {
-    ...mapState(["image", "file"]),
+    ...mapState(["file"]),
   },
   methods: {
     getFile() {
@@ -134,6 +135,7 @@ export default {
     },
     handleImage(e) {
       const newImage = e.target.files[0];
+      this.image = URL.createObjectURL(newImage);
       this.$store.commit("updateImage", newImage);
     },
     handleSubmit() {
@@ -147,7 +149,7 @@ export default {
       formData.append("rating", this.rating);
       formData.append("picture", this.file);
 
-      this.$store.dispatch("addBook", formData);
+      this.$store.dispatch("updateBook", { id: this.id, data: formData });
       this.$router.push({ name: "Bookshelf" });
     },
     formatDate(date) {
@@ -155,6 +157,11 @@ export default {
       const [YYYY, MM, DD] = date.split("-");
       const newPublished = `${MM}/${DD}/${YYYY}`;
       return newPublished;
+    },
+    deFormatDate(date) {
+      if (!date) return undefined;
+      const [MM, DD, YYYY] = date.split("/");
+      return `${YYYY}-${MM}-${DD}`;
     },
   },
 };

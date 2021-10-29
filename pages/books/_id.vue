@@ -4,7 +4,13 @@
       class="pt-16 d-lg-flex d-md-flex justify-center d-sm-block order-sm-2"
     >
       <v-card class="mt-16">
-        <v-img :src="currentBook.book.picture" class="image mt-4" contain />
+        <v-img
+          :src="currentBook.book.picture"
+          class="image mt-4"
+          width="400px"
+          height="500px"
+          contain
+        />
         <br />
         <v-rating
           length="5"
@@ -14,7 +20,7 @@
         >
         </v-rating>
       </v-card>
-      <v-card class="mt-16 order-sm-1" width="400px">
+      <v-card class="mt-16 order-sm-1 pt-10" width="400px">
         <v-card-title class="justify-center">
           {{ currentBook.book.title }}
         </v-card-title>
