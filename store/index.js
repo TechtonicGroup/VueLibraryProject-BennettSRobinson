@@ -1,11 +1,10 @@
 import axios from "axios";
 const libraryUrl = "http://localhost:8080/api/books/";
-import Empty from "@/assets/empty.jpeg";
+
 export const state = () => ({
   books: [],
   book: {},
   Author: { firstName: "", lastName: "" },
-  image: Empty,
   file: null,
 });
 
@@ -20,14 +19,14 @@ export const mutations = {
     state.Author = data;
   },
   updateImage: (state, data) => {
-    state.image = URL.createObjectURL(data);
     state.file = data;
   },
 };
 export const actions = {
-  async getBooks({ state, commit }) {
+  async getBooks({ state, commit }, search) {
     try {
-      const data = await axios.get(libraryUrl);
+      const searchURL = `/search/?query=${search}`;
+      const data = await axios.get(libraryUrl + (search ? searchURL : ""));
       commit("updateBooks", data.data);
     } catch (err) {
       console.error(err);
@@ -50,5 +49,14 @@ export const actions = {
   },
   deleteBook(state, id) {
     axios.delete(libraryUrl + id);
+  },
+
+  updateBook(state, { id, data }) {
+    console.log(id);
+    console.log(data);
+    axios
+      .put(libraryUrl + id, data)
+      .then((res) => console.log(res))
+      .catch((err) => console.error(err));
   },
 };
