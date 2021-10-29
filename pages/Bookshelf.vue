@@ -1,3 +1,4 @@
+<!--BookShelf page -->
 <template>
   <v-container class="pt-16 scroll">
     <v-card>
@@ -33,6 +34,7 @@
         </v-col>
       </v-row>
     </v-container>
+    <!--If the books state is empty then display this -->
     <v-container v-else class="d-flex justify-center align-center">
       <v-card>
         <v-card-title class="text-h3" justify="center" align="center"
@@ -54,19 +56,21 @@ import { mapState } from "vuex";
 export default {
   name: "Bookshelf",
 
+  //gets all books on initial render
   created() {
     this.getBooks();
   },
+  //grabs the state from store
   computed: {
     ...mapState(["books"]),
   },
   methods: {
-
     getBooks() {
+      //calls the getBooks action from store with the search value
       this.$store.dispatch("getBooks", this.$route.query.search);
-
     },
   },
+  //always watches the books state to see if there are any changes to the array
   watch: {
     books() {
       this.getBooks();

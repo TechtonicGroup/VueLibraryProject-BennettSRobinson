@@ -1,3 +1,4 @@
+<!--Title Picture -->
 <template>
   <section class="masthead" role="img" aria-label="Image Description">
     <h1>Books</h1>

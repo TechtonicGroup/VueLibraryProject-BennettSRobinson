@@ -1,6 +1,7 @@
 import axios from "axios";
-const libraryUrl = "http://localhost:8080/api/books/";
+const libraryUrl = "http://localhost:8080/api/books/"; //backend url
 
+//states
 export const state = () => ({
   books: [],
   book: {},
@@ -8,10 +9,12 @@ export const state = () => ({
   file: null,
 });
 
+// updates the states
 export const mutations = {
   updateBooks: (state, data) => {
     state.books = data;
   },
+  //update book state not for updating the database
   updateBook: (state, data) => {
     state.book = data;
   },
@@ -23,6 +26,8 @@ export const mutations = {
   },
 };
 export const actions = {
+  //gets all the books in the database and if there is a search value
+  //gets all books with that author name or title
   async getBooks({ state, commit }, search) {
     try {
       const searchURL = `/search/?query=${search}`;
@@ -32,6 +37,7 @@ export const actions = {
       console.error(err);
     }
   },
+  //gets book based on the id
   async getBook({ commit }, id) {
     try {
       const data = await axios.get(libraryUrl + id);
@@ -41,19 +47,20 @@ export const actions = {
       console.error(err);
     }
   },
+  //adds book to the database
   addBook(state, data) {
     axios
       .post(libraryUrl, data)
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
   },
+  //soft deletes book from database
   deleteBook(state, id) {
     axios.delete(libraryUrl + id);
   },
 
+  //updates the book based on the id
   updateBook(state, { id, data }) {
-    console.log(id);
-    console.log(data);
     axios
       .put(libraryUrl + id, data)
       .then((res) => console.log(res))

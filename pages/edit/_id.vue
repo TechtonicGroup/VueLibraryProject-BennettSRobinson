@@ -1,3 +1,4 @@
+<!--Edit Book page -->
 <template>
   <v-container class="mt-16">
     <v-card>
@@ -22,9 +23,11 @@ export default {
     AppForm,
   },
   created() {
+    //gets the book we are currently looking at from store actions
     this.$store.dispatch("getBook", this.$route.params.id);
   },
   computed: {
+    //gets the book and author state
     ...mapState(["book", "Author"]),
   },
 };

@@ -1,3 +1,5 @@
+<!--Header for the page 
+also most of the code here are prebuilt from create nuxt-app-->
 <template>
   <div>
     <v-navigation-drawer
@@ -59,6 +61,7 @@ export default {
     };
   },
   computed: {
+    // search bar on the header when the screen size is medium or large
     desktop() {
       return this.$vuetify.breakpoint.md || this.$vuetify.breakpoint.lg;
     },

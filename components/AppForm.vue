@@ -1,7 +1,8 @@
+<!--Forms for Edit and Add book page -->
 <template>
   <div>
     <v-card class="d-lg-flex d-sm-block pl-lg-16 justify-space-between">
-      <v-form ref="form" v-model="valid" validation>
+      <v-form v-model="valid" validation>
         <v-container>
           <v-col>
             <v-row cols="12" md="4">
@@ -79,6 +80,7 @@
         </v-container>
       </v-card>
     </v-card>
+    <!--Only see this if its the edit page -->
     <v-card v-if="form === 'edit'">
       <v-row class="d-flex justify-center align-center">
         <v-btn
@@ -101,15 +103,36 @@
         </v-btn>
       </v-row>
     </v-card>
+    <v-card v-else>
+      <v-row class="d-flex justify-center align-center">
+        <v-btn
+          class="primary mr-lg-5"
+          :block="$vuetify.breakpoint.xsOnly"
+          type="submit"
+          :disabled="!valid"
+          rounded
+          @click="handleSubmit"
+          >Add Book</v-btn
+        >
+
+        <v-btn
+          class="none ml-lg-5"
+          :block="$vuetify.breakpoint.xsOnly"
+          nuxt
+          to="/bookshelf"
+          rounded
+          >Cancel
+        </v-btn>
+      </v-row>
+    </v-card>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import Empty from "@/assets/empty.jpeg";
-
 export default {
-  props: ["form", "book", "author", "id"],
+  props: ["form", "book", "author", "id"], //gets the props
   data() {
     return {
       valid: false,
@@ -122,6 +145,7 @@ export default {
         : this.book.published,
       rating: this.book.rating,
       pages: this.book.pages,
+      //form rules
       titleRules: [(v) => !!v || "Title is required"],
       authorRules: [(v) => !!v || "Author name is required"],
       image: this.book.picture,
@@ -131,14 +155,20 @@ export default {
     ...mapState(["file"]),
   },
   methods: {
+    //Clicks the file input tag so you can upload images
     getFile() {
       this.$refs.uploader.click();
     },
+    //gets the image and saves it to the data image and update the file state
     handleImage(e) {
       const newImage = e.target.files[0];
       this.image = URL.createObjectURL(newImage);
       this.$store.commit("updateImage", newImage);
     },
+    //once submitted converts the data values into a form data
+    //Edit - it will update the current book with the form data
+    //Else - it will add the book with the form data
+    //then it will redirect to the bookshelf page
     handleSubmit() {
       const formData = new FormData();
       formData.append("title", this.title);
@@ -150,15 +180,20 @@ export default {
       formData.append("rating", this.rating);
       formData.append("picture", this.file);
 
-      this.$store.dispatch("updateBook", { id: this.id, data: formData });
+      if (this.form === "edit")
+        this.$store.dispatch("updateBook", { id: this.id, data: formData });
+      else this.$store.dispatch("addBook", formData);
+      this.$store.commit("updateImage", Empty);
       this.$router.push({ name: "Bookshelf" });
     },
+    //formats the data of the input date picker to MM/DD/YYYY
     formatDate(date) {
       if (!date) return undefined;
       const [YYYY, MM, DD] = date.split("-");
       const newPublished = `${MM}/${DD}/${YYYY}`;
       return newPublished;
     },
+    //reformats the date MM/DD/YYYY to YYYY-MM-DD so the date picker can read it
     deFormatDate(date) {
       if (!date) return undefined;
       const [MM, DD, YYYY] = date.split("/");

@@ -1,5 +1,5 @@
 use sql3444149;
-insert into Authors (name) values ("H.P. Lovecraft"), ('Keith Davidson');
+insert into Authors (firstName, lastName) values ("H.P.", "Lovecraft"), ('Keith', 'Davidson');
 insert into Books (title, summary, published, pages, rating,picture, AuthorId)
 values (
     "Call of Cthulhu", 
