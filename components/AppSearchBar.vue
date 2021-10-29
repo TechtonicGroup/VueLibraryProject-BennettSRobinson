@@ -1,5 +1,6 @@
 <template>
   <div clipped-right app>
+
     <v-text-field
       label="Search"
       class="mt-4"
@@ -20,9 +21,13 @@ export default {
     };
   },
   methods: {
-    handleSearch() {
-      this.$router.push({ path: "/bookshelf", payload: this.search });
+
+     handleSearch() {
+      const result = this.search;
+      this.search = "";
+      this.$router.push({ path: "/bookshelf", query: { search: result } });
     },
+
   },
 };
 </script>

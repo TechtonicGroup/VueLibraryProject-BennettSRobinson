@@ -107,6 +107,7 @@
 <script>
 import { mapState } from "vuex";
 import Empty from "@/assets/empty.jpeg";
+
 export default {
   props: ["form", "book", "author", "id"],
   data() {
