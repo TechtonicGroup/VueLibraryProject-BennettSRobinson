@@ -1,3 +1,4 @@
+<!-- Footer -->
 <template>
   <v-footer dark class="footer">
     <p>Copyright 1996 wait this isnt Yu-Gi-Oh</p>

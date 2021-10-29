@@ -1,3 +1,4 @@
+<!--Book Details page -->
 <template>
   <div>
     <v-container
@@ -75,11 +76,12 @@
 export default {
   data() {
     return {
-      id: this.$route.params.id,
+      id: this.$route.params.id, //gets current book id
     };
   },
 
   computed: {
+    //currentBook = {book: {state.book}, author:{state.author}}
     currentBook() {
       this.$store.dispatch("getBook", this.id);
       return {
@@ -89,6 +91,7 @@ export default {
     },
   },
   methods: {
+    //full name of the author
     fullName() {
       return (
         this.currentBook.author.firstName +
@@ -96,6 +99,7 @@ export default {
         this.currentBook.author.lastName
       );
     },
+    //calls the deleteBook action in the store and redirects back to bookshelf page
     handleDelete() {
       this.$store.dispatch("deleteBook", this.id);
       this.$router.push({ name: "Bookshelf" });

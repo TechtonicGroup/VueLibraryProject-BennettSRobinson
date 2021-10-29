@@ -80,8 +80,6 @@ module.exports = {
   },
   update: async (req, res) => {
     const file = req.file;
-    console.log(req.body);
-    console.log(req.params.id);
     const { summary, published } = req.body;
     if (file !== undefined) {
       uploadParams.Body = file.buffer;
